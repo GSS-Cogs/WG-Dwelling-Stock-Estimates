@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.4'
-#       jupytext_version: 1.2.4
+#       jupytext_version: 1.1.1
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -88,7 +88,7 @@ out.mkdir(exist_ok=True, parents=True)
 table.to_csv(out / 'observations.csv', index = False)
 # -
 
-schema = CSVWSchema('https://ons-opendata.github.io/ref_housing/')
+schema = CSVWMetadata('https://gss-cogs.github.io/ref_housing/')
 schema.create(out / 'observations.csv', out / 'observations.csv-schema.json')
 
 from datetime import datetime

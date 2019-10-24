@@ -39,23 +39,25 @@ for col in table:
         table[col] = table[col].astype('category')
         display(HTML(f'<h3>{col}</h3>'))
         display(table[col].cat.categories)
-table
+#table
 
 areas = table[['Area_Code', 'Area_ItemName_ENG']].drop_duplicates()
 areas.set_index('Area_Code', inplace=True)
 table.drop(columns=['Area_ItemName_ENG', 'Area_SortOrder', 'PartitionKey', 'RowKey',
                     'Tenure_SortOrder', 'Year_ItemName_ENG', 'Year_SortOrder'],
            inplace=True)
-areas
+#areas
 
 wales_gss_codes = pd.read_csv('wales-gss.csv', index_col='Label')
 areas = areas.join(wales_gss_codes, on='Area_ItemName_ENG')
+#table.to_csv('testCompare.csv', index = False)
 
 table['Period'] = table['Year_Code'].map(
     lambda x: f'gregorian-interval/{str(x)[:4]}-03-31T00:00:00/P1Y'
 )
 table.drop(columns=['Year_Code'], inplace=True)
-table
+#table
+
 
 table.rename(columns={
     'Tenure_ItemName_ENG': 'Tenure'
@@ -68,7 +70,7 @@ table['Tenure'] = table['Tenure'].map(
     lambda x: pathify(x[:-len(' (Number)')] if x.endswith(' (Number)') else
                       x[:-len(' (%}')] if x.endswith(' (%)') else x).replace('/','-')
     if x != 'All tenures (Number)' else 'total')
-table
+#table
 
 table['Geography'] = table['Area_Code'].map(
     lambda x: areas.loc[int(x)]['Code']
@@ -78,7 +80,7 @@ table.drop(columns=['Area_Code', 'Area_ItemNotes_ENG', 'Tenure_Code', 'Tenure_It
 table.rename(columns={'Data': 'Value'}, inplace=True)
 table = table[table['Measure Type'] != 'Percentage']
 table['Value'] = table['Value'].astype(int)
-table
+#table
 
 # +
 out = Path('out')

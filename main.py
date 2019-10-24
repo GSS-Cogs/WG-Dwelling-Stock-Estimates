@@ -58,7 +58,6 @@ table['Period'] = table['Year_Code'].map(
 table.drop(columns=['Year_Code'], inplace=True)
 #table
 
-
 table.rename(columns={
     'Tenure_ItemName_ENG': 'Tenure'
 }, inplace=True)
@@ -70,7 +69,7 @@ table['Tenure'] = table['Tenure'].map(
     lambda x: pathify(x[:-len(' (Number)')] if x.endswith(' (Number)') else
                       x[:-len(' (%}')] if x.endswith(' (%)') else x).replace('/','-')
     if x != 'All tenures (Number)' else 'total')
-#table
+table
 
 table['Geography'] = table['Area_Code'].map(
     lambda x: areas.loc[int(x)]['Code']
@@ -80,7 +79,18 @@ table.drop(columns=['Area_Code', 'Area_ItemNotes_ENG', 'Tenure_Code', 'Tenure_It
 table.rename(columns={'Data': 'Value'}, inplace=True)
 table = table[table['Measure Type'] != 'Percentage']
 table['Value'] = table['Value'].astype(int)
-#table
+
+#
+#
+# REMOVE ROWS WITH MID AND SOUTH WALES, NORTH WALES, SOUTH EAST WALES FOR NOW
+# NEED TO RESEARCH ACTUAL CODES FOR THESE VALUES AS THEY ARE NOT DEFINED IN http://statistics.data.gov.uk/id/statistical-geography/
+# AT THE MOMENT. IF SOME ARE FIND WE NEED TO GET ONS TO ADD IT TO THEIR PORTAL
+# THE 3 CODES BELOW HAVE BEEN ADDED TO THE WALES-GSS.CSV FILE AS A TEMPORARY MEASURE AND ALSO NEED TO BE CHANGED IF VALUES ARE FOUND
+#
+table = table[table.Geography != 'W-MSW']
+table = table[table.Geography != 'W-NW']
+table = table[table.Geography != 'W-SEW']
+table
 
 # +
 out = Path('out')

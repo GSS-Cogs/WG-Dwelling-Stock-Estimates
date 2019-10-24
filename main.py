@@ -74,7 +74,7 @@ table['Geography'] = table['Area_Code'].map(
     lambda x: areas.loc[int(x)]['Code']
 )
 table.drop(columns=['Area_Code', 'Area_ItemNotes_ENG', 'Tenure_Code', 'Tenure_ItemNotes_ENG', 
-                    'Tenure_Hierarchy', 'Area Hierarchy'], inplace=True)
+                    'Tenure_Hierarchy', 'Area_Hierarchy'], inplace=True)
 table.rename(columns={'Data': 'Value'}, inplace=True)
 table = table[table['Measure Type'] != 'Percentage']
 table['Value'] = table['Value'].astype(int)
@@ -100,12 +100,6 @@ with open(out / 'dataset.trig', 'wb') as metadata:
 
 # +
 #table['Tenure'].unique()
-
-# +
-#table['Tenure_Hierarchy'].unique()
-
-# +
-#table['Area_Hierarchy'].unique()
 
 # +
 #table['Geography'].unique()

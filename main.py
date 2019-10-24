@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.4'
-#       jupytext_version: 1.1.1
+#       jupytext_version: 1.2.4
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -19,8 +19,7 @@
 # +
 from gssutils import *
 
-scraper = Scraper('https://statswales.gov.wales/Catalogue/'
-                  'Housing/Dwelling-Stock-Estimates/dwellingstockestimates-by-localauthority-tenure')
+scraper = Scraper('https://statswales.gov.wales/Catalogue/Housing/Dwelling-Stock-Estimates/dwellingstockestimates-by-localauthority-tenure')
 scraper
 # -
 
@@ -74,8 +73,8 @@ table
 table['Geography'] = table['Area_Code'].map(
     lambda x: areas.loc[int(x)]['Code']
 )
-table.drop(columns=['Area_Code', 'Area_ItemNotes_ENG', 'Tenure_Code', 'Tenure_ItemNotes_ENG'],
-           inplace=True)
+table.drop(columns=['Area_Code', 'Area_ItemNotes_ENG', 'Tenure_Code', 'Tenure_ItemNotes_ENG', 
+                    'Tenure_Hierarchy', 'Area Hierarchy'], inplace=True)
 table.rename(columns={'Data': 'Value'}, inplace=True)
 table = table[table['Measure Type'] != 'Percentage']
 table['Value'] = table['Value'].astype(int)
@@ -99,4 +98,14 @@ scraper.dataset.creator = scraper.dataset.publisher
 with open(out / 'dataset.trig', 'wb') as metadata:
     metadata.write(scraper.generate_trig())
 
+# +
+#table['Tenure'].unique()
 
+# +
+#table['Tenure_Hierarchy'].unique()
+
+# +
+#table['Area_Hierarchy'].unique()
+
+# +
+#table['Geography'].unique()
